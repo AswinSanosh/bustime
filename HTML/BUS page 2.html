@@ -12,67 +12,68 @@
     <section id="header">
         <img src="image/logo.png" alt="image not found!" class="logo">
     </section>
-    <script>
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
+                <script>
+                function getLocation() {
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(showPosition);
+                    } else {
+                        alert("Geolocation is not supported by this browser.");
+                    }
+                }
+                function showPosition(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    // Send the location to the server (you can use AJAX or a form submission)
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("GET", `fetch_bus_stops.php?lat=${latitude}&lng=${longitude}`, true);
+                    xhr.send();
+
+                    document.getElementById("location").innerHTML = `Your Location: ${latitude}, ${longitude}`;
+                }
+            </script>
+            <?php
+            // Fetch the latitude and longitude from the GET parameters
+            $latitude = isset($_GET['lat']) ? $_GET['lat'] : null;
+            $longitude = isset($_GET['lon']) ? $_GET['lon'] : null;
+            
+            // Check if latitude and longitude are provided
+            if ($latitude !== null && $longitude !== null) {
+
+                $apiKey = 'AIzaSyDot5lrX9NJL7aZ5N47T493d4h4Yu0Vi30';
+                $cx = '22c3c3f0bedc942d6';
+            
+                // Google Custom Search API endpoint with location-aware query
+                $apiEndpoint = "https://www.googleapis.com/customsearch/v1?q=bus+stops+near&cx=$cx&key=$apiKey&near=$latitude,$longitude";
+            
+                // Initialize cURL session
+                $ch = curl_init($apiEndpoint);
+            
+                // Set cURL options
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            
+                // Execute cURL session and get the JSON response
+                $response = curl_exec($ch);
+            
+                // Check for cURL errors
+                if (curl_errno($ch)) {
+                    echo 'Curl error: ' . curl_error($ch);
+                }
+            
+                // Close cURL session
+                curl_close($ch);
+            
+                // Decode the JSON response
+                $results = json_decode($response, true);
+            
+                // Output the results (you might want to format this according to your needs)
+                print_r($results);
             } else {
-                alert("Geolocation is not supported by this browser.");
+                echo 'Error: Latitude and longitude not provided.';
             }
-        }
-
-        function showPosition(position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-
-            // Send the location to the server (you can use AJAX or a form submission)
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", `fetch_bus_stops.php?lat=${latitude}&lng=${longitude}`, true);
-            xhr.send();
-
-            // Display the location to the user
-            document.getElementById("location").innerHTML = `Your Location: ${latitude}, ${longitude}`;
-        }
-    </script>
-    <?php
-        $apiKey = 'AIzaSyDot5lrX9NJL7aZ5N47T493d4h4Yu0Vi30';
-        $cx = '22c3c3f0bedc942d6';
-    
-        // Get latitude and longitude from the request
-        $latitude = isset($_GET['lat']) ? $_GET['lat'] : null;
-        $longitude = isset($_GET['lng']) ? $_GET['lng'] : null;
-        
-        if ($latitude !== null && $longitude !== null) {
-            // Google Custom Search API endpoint with location-aware query
-            $apiEndpoint = "https://www.googleapis.com/customsearch/v1?q=bus stops&cx=$cx&key=$apiKey&near=$latitude,$longitude";
-        
-            // Initialize cURL session
-            $ch = curl_init($apiEndpoint);
-        
-            // Set cURL options
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        
-            // Execute cURL session and get the JSON response
-            $response = curl_exec($ch);
-        
-            // Check for cURL errors
-            if (curl_errno($ch)) {
-                echo 'Curl error: ' . curl_error($ch);
-            }
-        
-            // Close cURL session
-            curl_close($ch);
-        
-            // Decode the JSON response
-            $results = json_decode($response, true);
-        
-            // Output the results (you might want to format this according to your needs)
-            print_r($results);
-        } 
-        else {
-            echo 'Error: Latitude and longitude not provided.';
-        }
-    ?>
+            ?>                        
+        </div>
+    </section>
     <section id="footer">
         <img src="image/logo.png" alt="image not found!" class="logo">
     </section>
