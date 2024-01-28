@@ -14,7 +14,7 @@
     </section>
     <section id="ctent">
         <div id="cont">
-            <form action="BUS page 2.html" method="get">
+            <form action="BUS page 2.php" method="get">
                 <div>
                     <input type="submit" name="sub">
                 </div>
@@ -22,7 +22,7 @@
             <script>
                 function getLocation() 
                 {
-                    if (navigator.geolocation) 
+                    if (navigator.geolocation)
                     {
                         navigator.geolocation.getCurrentPosition(showPosition);
                     } 
