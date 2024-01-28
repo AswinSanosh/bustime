@@ -15,12 +15,14 @@
     <section id="ctent">
         <div id="cont">
             <form action="BUS page 2.php" method="get">
-                <div>
-                    <input type="submit" name="sub">
+                <div class="btn">
+                    <button name="sub"><span></span>Bus stops near me</button>
+                    <input type="text" name="lon" id="long" hidden>
+                    <input type="text" name="lat" id="lat" hidden>
                 </div>
             </form>
             <script>
-                function getLocation() 
+                function getLocation()
                 {
                     if (navigator.geolocation)
                     {
@@ -35,56 +37,47 @@
                 {
                     const latitude = position.coords.latitude;
                     const longitude = position.coords.longitude;
-
+                    document.getElementById(long).value=longitude;
+                    document.getElementById(lat).value=latitude;
                     document.getElementById("location").innerHTML = `Your Location: ${latitude}, ${longitude}`;
                 }
-            </script>                        
+            </script>
+            <?php
+                if(isset($_GET['sub']))
+                {
+                    echo "success";
+                    $latitude = isset($_GET['lat']) ? $_GET['lat'] : null;
+                    $longitude = isset($_GET['lon']) ? $_GET['lon'] : null;
+                    
+                    if ($latitude !== null && $longitude !== null) 
+                    {
+                        $apiKey = 'AIzaSyDot5lrX9NJL7aZ5N47T493d4h4Yu0Vi30';
+                        $cx = '22c3c3f0bedc942d6';
+                    
+                        $apiEndpoint = "https://www.googleapis.com/customsearch/v1?q=bus+stops+near&cx=$cx&key=$apiKey&near=$latitude,$longitude";
+                    
+                        $ch = curl_init($apiEndpoint);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                        $response = curl_exec($ch);
+                        if (curl_errno($ch)) {
+                            echo 'Curl error: ' . curl_error($ch);
+                        }
+
+                        curl_close($ch);
+                    
+                        // Decode the JSON response
+                        $results = json_decode($response, true);
+                        print_r($results);
+                    } 
+                    else 
+                    {
+                        echo 'Error: Latitude and longitude not provided.';
+                    }
+                }
+            ?>                      
         </div>
     </section>
-    <?php
-        if(isset($_GET['sub']))
-        {
-            echo "success";
-            $latitude = isset($_GET['lat']) ? $_GET['lat'] : null;
-            $longitude = isset($_GET['lon']) ? $_GET['lon'] : null;
-            
-            if ($latitude !== null && $longitude !== null) 
-            {
-                $apiKey = 'AIzaSyDot5lrX9NJL7aZ5N47T493d4h4Yu0Vi30';
-                $cx = '22c3c3f0bedc942d6';
-            
-                // Google Custom Search API endpoint with location query
-                $apiEndpoint = "https://www.googleapis.com/customsearch/v1?q=bus+stops+near&cx=$cx&key=$apiKey&near=$latitude,$longitude";
-            
-                // Initialize cURL session
-                $ch = curl_init($apiEndpoint);
-            
-                // Set cURL options
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            
-                // Execute cURL session and get the JSON response
-                $response = curl_exec($ch);
-            
-                // Check for cURL errors
-                if (curl_errno($ch)) {
-                    echo 'Curl error: ' . curl_error($ch);
-                }
-            
-                // Close cURL session
-                curl_close($ch);
-            
-                // Decode the JSON response
-                $results = json_decode($response, true);
-            
-                // Output the results (you might want to format this according to your needs)
-                print_r($results);
-            } 
-            else 
-            {
-                echo 'Error: Latitude and longitude not provided.';
-            }
-        }
-    ?>
     <section id="footer">
         <img src="image/logo.png" alt="image not found!" class="logo">
     </section>
