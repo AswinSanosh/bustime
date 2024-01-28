@@ -12,38 +12,48 @@
     <section id="header">
         <img src="image/logo.png" alt="image not found!" class="logo">
     </section>
-                <script>
-                function getLocation() {
-                    if (navigator.geolocation) {
+    <section id="ctent">
+        <div id="cont">
+            <form action="BUS page 2.html" method="get">
+                <div>
+                    <input type="submit" name="sub">
+                </div>
+            </form>
+            <script>
+                function getLocation() 
+                {
+                    if (navigator.geolocation) 
+                    {
                         navigator.geolocation.getCurrentPosition(showPosition);
-                    } else {
+                    } 
+                    else 
+                    {
                         alert("Geolocation is not supported by this browser.");
                     }
                 }
-                function showPosition(position) {
+                function showPosition(position)
+                {
                     const latitude = position.coords.latitude;
                     const longitude = position.coords.longitude;
 
-                    // Send the location to the server (you can use AJAX or a form submission)
-                    const xhr = new XMLHttpRequest();
-                    xhr.open("GET", `fetch_bus_stops.php?lat=${latitude}&lng=${longitude}`, true);
-                    xhr.send();
-
                     document.getElementById("location").innerHTML = `Your Location: ${latitude}, ${longitude}`;
                 }
-            </script>
-            <?php
-            // Fetch the latitude and longitude from the GET parameters
+            </script>                        
+        </div>
+    </section>
+    <?php
+        if(isset($_GET['sub']))
+        {
+            echo "success";
             $latitude = isset($_GET['lat']) ? $_GET['lat'] : null;
             $longitude = isset($_GET['lon']) ? $_GET['lon'] : null;
             
-            // Check if latitude and longitude are provided
-            if ($latitude !== null && $longitude !== null) {
-
+            if ($latitude !== null && $longitude !== null) 
+            {
                 $apiKey = 'AIzaSyDot5lrX9NJL7aZ5N47T493d4h4Yu0Vi30';
                 $cx = '22c3c3f0bedc942d6';
             
-                // Google Custom Search API endpoint with location-aware query
+                // Google Custom Search API endpoint with location query
                 $apiEndpoint = "https://www.googleapis.com/customsearch/v1?q=bus+stops+near&cx=$cx&key=$apiKey&near=$latitude,$longitude";
             
                 // Initialize cURL session
@@ -68,12 +78,13 @@
             
                 // Output the results (you might want to format this according to your needs)
                 print_r($results);
-            } else {
+            } 
+            else 
+            {
                 echo 'Error: Latitude and longitude not provided.';
             }
-            ?>                        
-        </div>
-    </section>
+        }
+    ?>
     <section id="footer">
         <img src="image/logo.png" alt="image not found!" class="logo">
     </section>
