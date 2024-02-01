@@ -1,4 +1,5 @@
 <!DOCTYPE HTML>
+<html>
 <HEAD>
     <TITLE>BUS TIME</TITLE>
     <LINK rel="stylesheet" href="style.css">
@@ -16,9 +17,9 @@
     </section>
     <section id="ctent">
         <div class="btn">
-            <a href="BUS page 2.html"><span></span>Bus timings <p>Know bus timings.</p></a><br>
-            <a href="BUS page 3.html"><span></span>Bus Stops<p>Find bus stops near me.</p></a><br>
-            <a href="BUS page 4.html"><span></span>Book tickets <p>Book bus tickets.</p></a><br>
+            <a href="BUS page 2.php"><span></span>Bus timings <p>Know bus timings.</p></a><br>
+            <a href="BUS page 3.php"><span></span>Bus Stops<p>Find bus stops near me.</p></a><br>
+            <a href="BUS page 4.php"><span></span>Book tickets <p>Book bus tickets.</p></a><br>
         </div>
     </section>
     <section id="footer">
@@ -27,7 +28,7 @@
     <div id="sidenav">
         <nav>
             <ul>
-                <li><a href="BUS page 1.html">Home</a></li>
+                <li><a href="BUS page 1.php">Home</a></li>
                 <li><a href="#">My tickets</a></li>
                 <li><a href="#">Bus stops near me</a></li>
                 <li><a href="#">Complaints</a></li>
@@ -55,3 +56,4 @@
         }
     </script>
 </body>
+</html>
