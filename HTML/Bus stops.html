@@ -52,13 +52,10 @@
         const lat=pos.coords.latitude;
         const lon=pos.coords.longitude;
         const accuracy = pos.coords.accuracy;
-        
 
         L.marker([lat,lon]).addTo(map);
         L.circle([lat,lon],{radius: accuracy}).addTo(map);
-
-        a=lat.toFixed(3);
-        b=lon.toFixed(3);
+        
         map.setView([lat, lon], 100);
     }
 
@@ -71,10 +68,6 @@
             alert("Cant access current location!")
         }
     }
-    a=lat.toFixed(3);
-    b=lon.toFixed(3);
-    alert("lat:" + a + " Lon:" + b);
-    map.setView([51.505, -0.09], 100);
 
 </script> 
 </html>

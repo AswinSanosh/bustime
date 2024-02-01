@@ -20,7 +20,7 @@
 }
 .banner-text h1{
     font-size: 180px;
-    font-family: 'Black Ops One', system-ui;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .banner-text p{
     font-size: 20px;
@@ -70,7 +70,7 @@
     position: relative;
 }
 .btn button{
-    font-family: 'Black Ops One', system-ui;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     width: 180px;
     text-decoration: none;
     display: inline-block;
