@@ -1,9 +1,9 @@
 *{
-    margin:0;
-    padding:0;
+    margin: 0px;
+    padding: 0px;
 }
 #banner{
-    background: linear-gradient(rgba(0, 229, 255, 0.5),#000000),url(image/banner.jpg);
+    background: linear-gradient(rgba(52, 52, 52, 0.499),#000000),url(image/banner.jpg);
     background-size:cover;
     background-position:center;
     height: 100vh;
@@ -20,27 +20,30 @@
 }
 .banner-text h1{
     font-size: 180px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Rubik Doodle Shadow', system-ui;
 }
 .banner-text p{
     font-size: 20px;
     font-style: italic;
-    font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+    font-family: 'Noto Sans', sans-serif;
 }
 .btn{
-    padding-left: 5%;
+    padding:10px;
     margin: 70px auto 70px;
+    text-align: center;
 }
 .btn a{
-    font-family: 'Black Ops One', system-ui;
-    width: 180px;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 20px;
+    width: 250px;
+    border-radius: 4px;
     text-decoration: none;
     display: inline-block;
     margin: 10px;
     padding: 12px ;
-    color: rgb(0, 0, 0);
-    border: 0.5px solid rgb(0, 213, 255);
-    background: rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+    border: 0.1px solid rgb(255, 255, 255);
+    background: transparent;
     position: relative;
     z-index: 1;
     transition: color 0.1s linear;
@@ -49,9 +52,11 @@
     width: 0%;
     height: 100%;
     position: absolute;
+    border-radius: 4px;
     top: 0;
     left:0;
-    background-color: rgba(0, 229, 255, 0.5);
+    background-color:rgba(52, 52, 52, 0.499);
+    backdrop-filter: blur(10px);
     z-index: -1;
     transition:0.1s;
 }
@@ -59,26 +64,28 @@
     width: 100%;
 }
 .btn a:hover{
-    color: white;
+    color: rgba(249, 0, 0, 0.541);
 }
 .btn a p{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 10px;
     text-decoration: none;
-    color: rgb(0, 0, 0);
+    color: rgb(206, 206, 206);
     background:transparent;
     position: relative;
 }
 .btn button{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    width: 180px;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 20px;
+    border-radius: 4px;
+    width: 250px;
     text-decoration: none;
     display: inline-block;
-    margin: 2px;
+    margin: 10px;
     padding: 12px ;
-    color: rgb(0, 0, 0);
-    border: 0.5px solid rgb(0, 213, 255);
-    background: rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
+    border: 0.1px solid rgb(255, 255, 255);
+    background: transparent;
     position: relative;
     z-index: 1;
     transition: color 0.1s linear;
@@ -86,10 +93,11 @@
 .btn button span{
     width: 0%;
     height: 100%;
+    border-radius: 4px;
     position: absolute;
     top: 0;
     left:0;
-    background-color: rgba(0, 229, 255, 0.5);
+    background-color: rgba(52, 52, 52, 0.499);
     z-index: -1;
     transition:0.1s;
 }
@@ -97,24 +105,34 @@
     width: 100%;
 }
 .btn button:hover{
-    color: white;
+    color: rgba(249, 0, 0, 0.541);
 }
 
 #footer{
-    background: linear-gradient(rgba(0, 229, 255, 0.5),#000000),url(image/banner.jpg);
+    background: linear-gradient(rgba(0, 0, 0, 0.904),#000000),url(image/banner.jpg);
     background-size:cover;
-    background-position:center;
-    height: 10vh;
+    backdrop-filter: blur(10px);
+    background-position:bottom;
+    backdrop-filter: blur(10px);
     overflow: hidden;
-    bottom: 0;
+    position: fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    height:10vh;
+    z-index: 5;
 }
 
 #header{
-    background: linear-gradient(rgba(0, 229, 255, 0.5),#000000),url(image/banner.jpg);
+    background: linear-gradient(rgba(52, 52, 52, 0.499),#000000),url(image/banner.jpg);
     background-size:cover;
     background-position:center;
     height: 15vh;
     overflow: hidden;
+    top: 0;
+    left:0;
+    right:0;
+    height:10vh;
 }
 
 #ctent{
@@ -124,12 +142,13 @@
 }
 
 .cont{
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Noto Sans', sans-serif;
     font-size: 10px;
     text-decoration: none;
     color: rgb(0, 0, 0);
     background:transparent;
     position: relative;
+    margin: 4%;
 }
 
 #sidenav{
@@ -138,8 +157,9 @@
     position: fixed;
     right: -250px;
     top: 0;
-    background-color: rgb(0, 0, 0);
-    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.51);
+    backdrop-filter: blur(10px);
+    z-index: 10;
     transition: 0.5s;
 }
 nav ul li{
@@ -147,20 +167,19 @@ nav ul li{
     margin: 50px 20px;
 }
 nav ul li a{
-    font-family: 'Black Ops One', system-ui;
+    font-family: 'Noto Sans', sans-serif;
     text-decoration: none;
     color: white;
 }
 #menubtn{
     width: 50px;
     height: 50px;
-    background:transparent;
     text-align: center;
     position: fixed;
     right: 30px;
-    top: 20px;
+    top: 10px;
     border-radius: 3px;
-    z-index: 3;
+    z-index: 11;
     cursor: pointer;
 }
 #menubtn img{
@@ -170,6 +189,7 @@ nav ul li a{
     margin-top: 15px;
 }
 
-#map{
-    height: 350px;
+#page{
+    background-color: rgb(0, 0, 0);
+    z-index:0;
 }

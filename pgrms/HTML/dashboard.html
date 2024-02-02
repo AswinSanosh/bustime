@@ -25,6 +25,23 @@
     </style>
 </HEAD>
 <body>
-    
+    <button onclick="getbusstops()">get</button>
+    <form>
+        <input type="text" id="busStopName">
+    </form>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    function getbusstops() {
+        $.ajax({
+            url: 'busstop.php',
+            success: function (data) {
+                var name = data.name;
+                console.log(name);
+                // Set the value to an element with the ID "busStopName"
+                document.getElementById('busStopName').value = name;
+            }
+        });
+    }
+</script>
 </html>

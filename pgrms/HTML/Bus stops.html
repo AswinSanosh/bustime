@@ -24,28 +24,54 @@
 
     <style>
         #map{
-            height: 400px;
+            text-align: center;
+            margin-block: 20px;
+            padding-block: 20px;
+            height: 500px;
             width: 100%;
             z-index: 0;
         }
     </style>
 </HEAD>
-<body>
+<body onload="getlocation()">
     <section id="page">
         <section id="header">
             <img src="image/logo.png" alt="image not found!" class="logo">
         </section>
         <section id="ctent">
+            <div id="cont">
+                <div style="text-align: right;padding-right: 35px;">
+                    <a style="z-index: 3;
+                            border: 1px;
+                            text-decoration: none;
+                            font-family: 'Noto Sans', sans-serif;
+                            font-size: 10px;
+                            position: fixed;
+                            width: 100;
+                            border-radius: 4px;
+                            text-decoration: none;
+                            display: inline-block;
+                            margin: 10px;
+                            padding: 12px ;
+                            color: rgb(255, 255, 255);
+                            border: 0.1px solid rgb(255, 255, 255);
+                            background: transparent;
+                            position: relative;
+                            z-index: 1;
+                            transition: color 0.1s linear;" 
+                    href="Bus stops.html"><span></span>Refresh</a>
+                </div>
+                <div id="map"></div>
+            </div>
+        </section>
+        <section id="ctent">
             <div class="btn">
-                <button onclick="getlocation()"><span></span>Get Location</button>
-                <form action="bustime.php" method="post">
+                <form action="busstop.php" method="post">
                     <input type="hidden" id="lati">
                     <input type="hidden" id="long">
                     <input type="hidden" id="emp">
+                    <button id="button" type="submit"><span></span>Find nearest Bus Stop</button>
                 </form>
-            </div>
-            <div id="cont">
-                <div id="map"></div>
             </div>
         </section>
         <section id="footer"></section>
@@ -82,6 +108,16 @@
     </section>
 </body>
 <script>
+    function getbusstops()
+    {
+        $.ajax({
+            url: 'busstop.php',
+            success: function(data) {
+                var name = data.name;
+                console.log(name);
+            }
+        });
+    }
     function getlocation()
     {
         document.getElementById("map").style.display="block";
