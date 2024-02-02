@@ -7,7 +7,9 @@
     <LINK rel="stylesheet" href="style.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Rubik+Doodle+Shadow&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@900&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
@@ -21,35 +23,70 @@
     </script>
 
     <style>
-        #map{height:350px;}
+        #map{
+            height: 400px;
+            width: 100%;
+            z-index: 0;
+        }
     </style>
 </HEAD>
 <body>
-    <section id="header">
-        <img src="image/logo.png" alt="image not found!" class="logo">
-    </section>
-    <section id="ctent">
-        <div class="btn">
-            <button onclick="getlocation()"><span></span> Get My Location</button>
-            <form action="bustime.php" method="post">
-                <input type="hidden" id="lati">
-                <input type="hidden" id="long">
-                <input type="hidden" id="emp">
-            </form>
+    <section id="page">
+        <section id="header">
+            <img src="image/logo.png" alt="image not found!" class="logo">
+        </section>
+        <section id="ctent">
+            <div class="btn">
+                <button onclick="getlocation()"><span></span>Get Location</button>
+                <form action="bustime.php" method="post">
+                    <input type="hidden" id="lati">
+                    <input type="hidden" id="long">
+                    <input type="hidden" id="emp">
+                </form>
+            </div>
+            <div id="cont">
+                <div id="map"></div>
+            </div>
+        </section>
+        <section id="footer"></section>
+        <div id="sidenav">
+            <nav>
+                <ul>
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="#">My tickets</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="#">Complaints</a></li>
+                    <li><a href="#">Contact us</a></li>
+                </ul>
+            </nav>
         </div>
-        <div id="cont">
-            <div id="map"></div>
+        <div id="menubtn">
+            <img src="image/menu.png" alt="image not found!" id="menu">
         </div>
-    </section>
-    <section id="footer">
-        <img src="image/logo.png" alt="image not found!" class="logo">
+        <script>
+            var menubtn = document.getElementById("menubtn")
+            var menubtn = document.getElementById("sidenav")
+            var menubtn = document.getElementById("menu")
+
+            menubtn.onclick = function(){
+                if(sidenav.style.right=="-250px")
+                {
+                    sidenav.style.right="0px";
+                }
+                else
+                {
+                    sidenav.style.right="-250px";
+                }
+            }
+        </script>
     </section>
 </body>
 <script>
     function getlocation()
     {
+        document.getElementById("map").style.display="block";
+
         var map = L.map('map')
-        
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -65,20 +102,28 @@
             if(document.getElementById("lati").value!='')
             {
                 map.setView([lat, lon], 100);
-                
+
                 //alert(document.getElementById("lati").value!='')
                 var latit=document.getElementById("lati").value;
                 var longit=document.getElementById("long").value;
-                map.removeLayer(L.marker([latit,longit]).addTo(map));
-                setTimeout(5000);
+                var func=map.removeLayer(L.circleMarker([latit,longit]).addTo(map));
+                setTimeout(1000);
                 success();
             }
 
-            var marker=L.marker([lat,lon]).addTo(map);
-            L.circle([lat,lon],{radius: accuracy}).addTo(map);
-            map.setView([lat, lon], 100);
+            var pup=L.popup().setContent("You");
+            var cm=L.circleMarker([lat,lon],{
+                radius: 10,
+                stroke: true,
+                color: 'red',
+                opacity: 1,
+                weight: 1,
+                fill: true,
+                fillColor: "blue",
+                fillOpacity:1,
+            }).bindPopup(pup).addTo(map);
 
-            document.getElementById("emp").value=L.marker([lat,lon]).addTo(map);
+            map.setView([lat, lon], 100);
             document.getElementById("long").value=lon;
             document.getElementById("lati").value=lat;
         }
@@ -92,6 +137,7 @@
                 alert("Cant access location!")
             }
         }
+        setInterval(getlocation(),1000);
     }
 </script> 
 </html>
