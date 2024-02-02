@@ -1,0 +1,26 @@
+[
+    {
+        "SerialNo": "1",
+        "Stopname": "Maliankara Post Ofice",
+        "Latitude": "10.181208",
+        "Longitude": "76.1844948",
+        "PostalCode": "683516",
+        "Distance": "0.06766922511000344"
+    },
+    {
+        "SerialNo": "2",
+        "Stopname": "Maliankara College",
+        "Latitude": "10.1808913",
+        "Longitude": "76.1832751",
+        "PostalCode": "683516",
+        "Distance": "0.11136796640941303"
+    },
+    {
+        "SerialNo": "3",
+        "Stopname": "ICE Plant, Maliankara",
+        "Latitude": "10.1793894",
+        "Longitude": "76.1771835",
+        "PostalCode": "683516",
+        "Distance": "0.7870973230104092"
+    }
+]

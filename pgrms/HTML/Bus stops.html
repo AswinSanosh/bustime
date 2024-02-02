@@ -67,10 +67,10 @@
         <section id="ctent">
             <div class="btn">
                 <form action="busstop.php" method="post">
-                    <input type="hidden" id="lati">
-                    <input type="hidden" id="long">
+                    <input type="hidden" id="lati" name="lati">
+                    <input type="hidden" id="long" name="long">
                     <input type="hidden" id="emp">
-                    <button id="button" type="submit"><span></span>Find nearest Bus Stop</button>
+                    <button id="button" type="submit" name="sub"><span></span>Find nearest Bus Stop</button>
                 </form>
             </div>
         </section>
@@ -162,6 +162,14 @@
             map.setView([lat, lon], 100);
             document.getElementById("long").value=lon;
             document.getElementById("lati").value=lat;
+
+            //sending to php
+            var xhr = new XMLHttpRequest();
+            var url = "busstops.php";
+            var params = "latitude=" + lat + "&longitude=" + lon;
+            
+            xhr.open("GET", url + "?" + params, true);
+            xhr.send();
         }
 
         function error(err)
@@ -175,5 +183,5 @@
         }
         setInterval(getlocation(),1000);
     }
-</script> 
+</script>
 </html>

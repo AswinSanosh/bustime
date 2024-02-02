@@ -1,18 +1,18 @@
 <!DOCTYPE HTML>
 <html>
-<HEAD>
-    <TITLE>BUS TIME</TITLE>
+<head>
+    <title>BUS TIME</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <LINK rel="stylesheet" href="style.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
         crossorigin=""/>
-    
+
     <!-- Make sure you put this AFTER Leaflet's CSS -->
     <script 
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -21,27 +21,29 @@
     </script>
 
     <style>
-        #map{height: 350px;}
+        #map { height: 350px; }
     </style>
-</HEAD>
+</head>
 <body>
     <button onclick="getbusstops()">get</button>
     <form>
         <input type="text" id="busStopName">
     </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        function getbusstops() {
+            fetch("stops.json")
+                .then(res => res.json())
+                .then(data => {
+                        data.forEach(post => {
+                            
+                        });
+                    
+                    });
+
+
+        }
+    </script>
 </body>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script>
-    function getbusstops() {
-        $.ajax({
-            url: 'busstop.php',
-            success: function (data) {
-                var name = data.name;
-                console.log(name);
-                // Set the value to an element with the ID "busStopName"
-                document.getElementById('busStopName').value = name;
-            }
-        });
-    }
-</script>
 </html>

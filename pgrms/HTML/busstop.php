@@ -1,14 +1,49 @@
 <?php
-    // busstop.php
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "mysql";
 
-    // Sample data (replace this with your actual data retrieval logic)
-    $busStopData = array(
-        'name' => 'Bus Stop 1',
-        'location' => 'City Center',
-        // Add more data fields as needed
-    );
+    $lat = $_POST['lati'];
+    $lon = $_POST['long'];
 
-    // Encode the data as JSON and return it
+    // Validation of latitude and longitude
+    if (!isset($lat) || !isset($lon) || !is_numeric($lat) || !is_numeric($lon)) {
+        echo json_encode(['error' => 'Invalid latitude or longitude']);
+        exit;
+    }
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $query = "SELECT `Sl.No.`, `Stopname`, `Latitude`, `Longitude`, `PostalCode`, 
+        (6371 * acos(cos(radians($lat)) * cos(radians(`Latitude`)) * cos(radians(`Longitude`) - radians($lon)) + sin(radians($lat)) * sin(radians(`Latitude`)))) AS distance 
+        FROM `bustime` 
+        ORDER BY distance 
+        LIMIT 3";
+
+    $result = $conn->query($query);
+
+    $busStopData = array();
+
+    if ($result->num_rows > 0) {
+        // Output data of each row
+        while ($row = $result->fetch_assoc()) {
+            $busStopData[] = array(
+                'SerialNo' => $row["Sl.No."],
+                'Stopname' => $row["Stopname"],
+                'Latitude' => $row["Latitude"],
+                'Longitude' => $row["Longitude"],
+                'PostalCode' => $row["PostalCode"],
+                'Distance' => $row["distance"],
+            );
+        }
+    }
     header('Content-Type: application/json');
-    echo json_encode($busStopData);
+    $encoded=json_encode($busStopData, JSON_PRETTY_PRINT);
+    echo json_encode($encoded);
+    file_put_contents('stops.json', $encoded);
 ?>
