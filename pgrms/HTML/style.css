@@ -9,7 +9,8 @@
     height: 100vh;
 }
 .logo{
-    width: 5%;
+    width: 4%;
+    height: auto;
     position: absolute;
     top: 1%;
 }
@@ -117,7 +118,7 @@
 }
 
 #footer{
-    background: linear-gradient(rgba(0, 0, 0, 0.904),#000000),url(image/banner.jpg);
+    background: linear-gradient(rgb(0, 0, 0),#000000);
     background-size:cover;
     backdrop-filter: blur(10px);
     background-position:bottom;

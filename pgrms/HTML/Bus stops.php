@@ -35,12 +35,12 @@
 <body onload="getlocation()">
     <section id="page">
         <section id="header">
-            <img src="image/logo.png" alt="image not found!" class="logo">
+            <a href="Home.html"><img src="image\logo bgr.png" alt="image not found!" class="logo"></a>
         </section>
         <section id="ctent">
             <div id="cont">
                 <div style="text-align: right;padding-right: 35px;">
-                    <a style="z-index: 3;
+                    <button style="z-index: 3;
                             border: 1px;
                             text-decoration: none;
                             font-family: 'Noto Sans', sans-serif;
@@ -58,7 +58,7 @@
                             position: relative;
                             z-index: 1;
                             transition: color 0.1s linear;" 
-                    href="Bus stops.html"><span></span>Refresh</a>
+                    onclick="view()"><span></span>Reset View</a>
                 </div>
                 <div id="mapsec"><div id="map"></div></div>
             </div>
@@ -85,6 +85,11 @@
                     <input type="hidden" id="emp">
                     <button style="width: 200px;position:relative;top: 200px;">DATABASE - PHP</button>
                 </form>
+                <form action="bustime.php" method="post"> <!--to time-->
+                    <input type="hidden" id="ses" name="sessid">
+                    <input type="hidden" id="sesname" name="sessname">
+                    <button style="width: 200px;position:relative;top: 200px;display:none" id="subm" name="subm">Bus Time</button>
+                </form>
             </div>
         </div>
         <div id="menubtn">
@@ -109,6 +114,9 @@
     </section>
 </body>
 <script>
+    function view(){
+        map.setView([lat, lon],100);
+    }
     var cou=1;
     function getlocation()
     {
@@ -128,13 +136,13 @@
         navigator.geolocation.watchPosition(success,error); //locating user
         function success(pos)
         {
-            const lat=pos.coords.latitude;
-            const lon=pos.coords.longitude;
-            const accuracy = pos.coords.accuracy;
+            globalThis.lat=pos.coords.latitude;
+            globalThis.lon=pos.coords.longitude;
+            globalThis.accuracy = pos.coords.accuracy;
 
             var xhr = new XMLHttpRequest();
             var url = "busstop.php";
-            var params = "lati=" + lat + "&long=" + lon; // Use "&" to separate parameters
+            var params = "lati=" + lat + "&long=" + lon;
             xhr.open("POST", url, true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.send(params);
@@ -143,8 +151,6 @@
 
             if(document.getElementById("lati").value!='')
             {
-                map.setView([lat, lon], 100);
-
                 //alert(document.getElementById("lati").value)
                 var latit=document.getElementById("lati").value;
                 var longit=document.getElementById("long").value;
@@ -191,12 +197,12 @@
 
                 data.forEach(stop => 
                 {
-                    console.log("Bus Stop ID: " + stop.SerialNo);
+                    /*console.log("Bus Stop ID: " + stop.SerialNo);
                     console.log("Bus Stop Name: " + stop.Stopname);
                     console.log("Latitude: " + stop.Latitude);
                     console.log("Longitude: " + stop.Longitude);
                     console.log("Postal Code: " + stop.PostalCode);
-                    console.log("Distance " + stop.Distance);
+                    console.log("Distance " + stop.Distance);*/
 
                     const stopArray = [
                         stop.SerialNo,
@@ -218,43 +224,70 @@
                 addBtn.addEventListener("click", addInput);
 
                 function addInput() {
-                    const flex = document.createElement("div");
+                    globalThis.flex = document.createElement("div");
                     flex.className = "btn";
+                    const arr=new Array;
+                    var itr=0;
                     busStopsArray.forEach(stop => {
-                        globalThis.idst = stop[0];
-                        globalThis.Name = stop[1]; // Bus Stop Name
-                        globalThis.Latistop =stop[2];
-                        globalThis.Longstop = stop[3];
-                        globalThis.Postalcode = stop[4];
-                        globalThis.Distance = stop[5]; // Distance
+                        const idst = stop[0];
+                        const Name = stop[1]; // Bus Stop Name
+                        const Latistop =stop[2];
+                        const Longstop = stop[3];
+                        const Postalcode = stop[4];
+                        const Distance = stop[5]; // Distance
+
                         if (Distance*1000 < 1000)
                         {
-                            document.getElementById("finder").style.display = "none";
+                            arr[itr]={ids:stop[0],Name:stop[1],Latitude:stop[2],Longitude:stop[3],Postalcode:stop[4],Distance:stop[5]}
+                            console.log(arr[itr]);
+                            locatestop(arr[itr]);
 
-                            const newelement = document.createElement("button");
-                            newelement.setAttribute('onclick',locatestop());
-                            newelement.setAttribute('id',idst);
-                            const t = document.createTextNode(Name+" -"+(Distance*1000).toFixed(1)+"m");
+                            document.getElementById("finder").style.display = "none";
+                            const newelement = document.createElement("a");
+                            newelement.style.cursor="pointer";
+                            newelement.id=arr[itr].ids+") "+stop[1];
+                            //alert(newelement.id);
+                            //alert(arr[itr].ids);
+
+                            newelement.addEventListener("click",function()
+                            {
+                                document.getElementById("ses").value=newelement.id;
+                                if(confirm(newelement.id))
+                                {
+                                    document.getElementById("subm").click();
+                                }
+                            });
+
+                            const t = document.createTextNode(Name+": "+(Distance*1000).toFixed(1)+"m");
                             newelement.appendChild(t);
 
                             input.appendChild(flex);
                             flex.appendChild(newelement);
+
+                            itr++;
                         }
                     });
-                    function locatestop()
-                    {
-                        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        }).addTo(map);
-                        
-                        const mar = L.marker([Latistop,Longstop]).addTo(map);
-                        mar.bindPopup(Name + " -" + (Distance * 1000).toFixed(1) + "m").openPopup();
-                    }
                 }
             })
             .catch(error => {
                 console.error("Error fetching bus stops:", error);
             });
+    }
+    function locatestop(arra) 
+    {
+        //alert(arra.Name+", "+(arra.Distance*1000).toFixed(1));
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        const mar = L.marker([arra.Latitude, arra.Longitude], 
+        {
+            clickable: true,
+            id: arra.ids*1941,
+        }).addTo(map);
+
+        mar.bindPopup(arra.Name + " " + (arra.Distance * 1000).toFixed(1) + "m", { autoClose: false, autoPan: false }).openPopup();
+        map.setView([lat, lon], 16);
     }
 </script>
 </html>

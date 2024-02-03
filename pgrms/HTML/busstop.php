@@ -51,4 +51,4 @@
     $encoded=json_encode($busStopData, JSON_PRETTY_PRINT);
     echo json_encode($encoded);
     file_put_contents('stops.json', $encoded);
-?>
+
