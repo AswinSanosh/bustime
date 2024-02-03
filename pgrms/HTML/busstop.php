@@ -1,4 +1,5 @@
 <?php
+    session_start();
     $servername = "localhost";
     $username = "root";
     $password = "";
@@ -6,6 +7,10 @@
 
     $lat = $_POST['lati'];
     $lon = $_POST['long'];
+
+    // Store the values in session variables
+    $_SESSION['latitude'] = $lat;
+    $_SESSION['longitude'] = $lon;
 
     // Validation of latitude and longitude
     if (!isset($lat) || !isset($lon) || !is_numeric($lat) || !is_numeric($lon)) {

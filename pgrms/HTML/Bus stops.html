@@ -70,9 +70,11 @@
                     <input type="hidden" id="lati" name="lati">
                     <input type="hidden" id="long" name="long">
                     <input type="hidden" id="emp">
-                    <button id="button" type="submit" name="sub"><span></span>Find nearest Bus Stop</button>
+                    <a href="busstop.php">Set JSON</a>
                 </form>
             </div>
+            <div class="btn"><a href="#sec" onclick="getbusstops()" class="add"><span></span>Find nearest Bus Stop</a></div>
+            <div class="newel" id="sec"></div>
         </section>
         <section id="footer"></section>
         <div id="sidenav">
@@ -83,6 +85,7 @@
                     <li><a href="dashboard.html">Dashboard</a></li>
                     <li><a href="#">Complaints</a></li>
                     <li><a href="#">Contact us</a></li>
+                    <li><a href="busstop.php">Set JSON</a></li>
                 </ul>
             </nav>
         </div>
@@ -108,16 +111,7 @@
     </section>
 </body>
 <script>
-    function getbusstops()
-    {
-        $.ajax({
-            url: 'busstop.php',
-            success: function(data) {
-                var name = data.name;
-                console.log(name);
-            }
-        });
-    }
+
     function getlocation()
     {
         document.getElementById("map").style.display="block";
@@ -128,18 +122,28 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        navigator.geolocation.watchPosition(success,error);
+        navigator.geolocation.watchPosition(success,error); //locating user
         function success(pos)
         {
             const lat=pos.coords.latitude;
             const lon=pos.coords.longitude;
             const accuracy = pos.coords.accuracy;
 
+            var xhr = new XMLHttpRequest();
+            var url = "busstop.php";
+            var params = "lati=" + lat + "&long=" + lon; // Use "&" to separate parameters
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send(params);
+
+            alert(params);
+
+
             if(document.getElementById("lati").value!='')
             {
                 map.setView([lat, lon], 100);
 
-                //alert(document.getElementById("lati").value!='')
+                //alert(document.getElementById("lati").value)
                 var latit=document.getElementById("lati").value;
                 var longit=document.getElementById("long").value;
                 var func=map.removeLayer(L.circleMarker([latit,longit]).addTo(map));
@@ -156,20 +160,12 @@
                 weight: 1,
                 fill: true,
                 fillColor: "blue",
-                fillOpacity:1,
+                fillOpacity:0.5,
             }).bindPopup(pup).addTo(map);
 
             map.setView([lat, lon], 100);
             document.getElementById("long").value=lon;
             document.getElementById("lati").value=lat;
-
-            //sending to php
-            var xhr = new XMLHttpRequest();
-            var url = "busstops.php";
-            var params = "latitude=" + lat + "&longitude=" + lon;
-            
-            xhr.open("GET", url + "?" + params, true);
-            xhr.send();
         }
 
         function error(err)
@@ -182,6 +178,69 @@
             }
         }
         setInterval(getlocation(),1000);
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    function getbusstops() 
+    {
+        fetch("stops.json")
+            .then(res => res.json())
+            .then(data => {
+                const busStopsArray = [];
+
+                data.forEach(stop => {
+                    console.log("Bus Stop ID: " + stop.SerialNo);
+                    console.log("Bus Stop Name: " + stop.Stopname);
+                    console.log("Latitude: " + stop.Latitude);
+                    console.log("Longitude: " + stop.Longitude);
+                    console.log("Postal Code: " + stop.PostalCode);
+                    console.log("Distance " + stop.Distance);
+
+                    const stopArray = [
+                        stop.SerialNo,
+                        stop.Stopname,
+                        stop.Latitude,
+                        stop.Longitude,
+                        stop.PostalCode,
+                        stop.Distance
+                    ];
+
+                    busStopsArray.push(stopArray);
+                });
+
+                console.log(busStopsArray);
+
+                const addBtn = document.querySelector(".add");
+                const input = document.querySelector(".newel");
+
+                addBtn.addEventListener("click", addInput);
+
+                function addInput() {
+                    busStopsArray.forEach(stop => {
+                        const Name = stop[1]; // Bus Stop Name
+                        const Latitude =stop[2];
+                        const Longitude = stop[3];
+
+                        const Distance = stop[5]; // Distance
+
+                        if (Distance*1000 < 500) 
+                        {
+                            const newelement = document.createElement("button");
+                            const t = document.createTextNode(Name+" "+(Distance*1000).toFixed(2)+"m");
+                            newelement.appendChild(t);
+
+                            const flex = document.createElement("div");
+                            flex.className = "btn";
+                            input.appendChild(flex);
+                            flex.appendChild(newelement);
+                        }
+                    });
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching bus stops:", error);
+            });
     }
 </script>
 </html>
