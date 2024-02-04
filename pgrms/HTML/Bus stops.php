@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <HEAD>
     <TITLE>BUS TIME</TITLE>
     <meta charset="UTF-8">
@@ -64,11 +64,11 @@
             </div>
         </section>
         <section id="ctent">
-            <div class="btn" id="finder"><a href="#sec" onclick="getbusstops()" class="add"><span></span>Find nearest Bus Stop</a></div>
+            <div class="btn" id="finder"><a href="#mapsec" onclick="getbusstops()" class="add"><span></span>Find nearest Bus Stop</a></div>
             <div class="newel" id="sec"></div>
         </section>
         <section id="footer"></section>
-        <div id="sidenav">
+        <div id="sidenav" style="right:-250px;">
             <nav>
                 <ul>
                     <li><a href="Home.html">Home</a></li>
@@ -88,6 +88,7 @@
                 <form action="bustime.php" method="post"> <!--to time-->
                     <input type="hidden" id="ses" name="sessid">
                     <input type="hidden" id="sesname" name="sessname">
+                    <input type="hidden" name="cm" id="cm">
                     <button style="width: 200px;position:relative;top: 200px;display:none" id="subm" name="subm">Bus Time</button>
                 </form>
             </div>
@@ -114,6 +115,7 @@
     </section>
 </body>
 <script>
+    setInterval(getlocation(),1000);
     function view(){
         map.setView([lat, lon],100);
     }
@@ -157,7 +159,7 @@
                 map.removeLayer(L.circleMarker([latit,longit]).addTo(map))
                 setInterval(success(),1000);
             }
-            var pup=L.popup().setContent("You");
+
             var cm=L.circleMarker([lat,lon],{
                 radius: 10,
                 stroke: true,
@@ -167,11 +169,13 @@
                 fill: true,
                 fillColor: "blue",
                 fillOpacity:0.5,
-            }).bindPopup(pup).addTo(map);
+            }).addTo(map);
+            cm.bindPopup("You",{autoClose:false, autoPan:false}).openPopup();
 
             map.setView([lat, lon], 100);
             document.getElementById("long").value=lon;
             document.getElementById("lati").value=lat;
+            document.getElementById("cm").value=params;
         }
 
         function error(err)
@@ -183,7 +187,6 @@
                 alert("Cant access location!")
             }
         }
-        setInterval(getlocation(),1000);
     }
 </script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>

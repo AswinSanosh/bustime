@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <HEAD>
     <TITLE>BUS TIME</TITLE>
     <meta charset="UTF-8">
@@ -37,63 +38,67 @@
         <a href="Home.html"><img src="image\logo bgr.png" alt="image not found!" class="logo"></a>
     </section>
     <?php
-    if(isset($_POST["subm"]))
-    {
-        $id = $_POST["sessid"];
-        $arr = explode(") ", $id);
-        //echo '<script>alert("' . $arr[1] . '")</script>';
-
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        $dbname = "mysql";
-
-        $conn = new mysqli($servername, $username, $password, $dbname);
-
-        if ($conn->connect_error) 
+        if(isset($_POST["subm"]))
         {
-            die("Connection failed: " . $conn->connect_error);
-        }
+            $id = $_POST["sessid"];
+            $arr = explode(") ", $id);
+            //echo '<script>alert("' . $arr[1] . '")</script>';
 
-        $stopName = $arr[1];
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "mysql";
 
-        $sql = "SELECT * FROM bus WHERE `Stop Name` = '$stopName'";
-        $result = $conn->query($sql);
+            $conn = new mysqli($servername, $username, $password, $dbname);
 
-        if($result->num_rows > 0) 
-        {
-            while($row = $result->fetch_assoc()) 
+            if ($conn->connect_error) 
             {
-                //echo '<script>alert("' .$row["Bus name"]. '")</script>';
-                echo "Bus name: " . $row["Bus name"] . "<br>";
-                echo "Time of arrival: " . $row["Time of arrival"] . "<br>";
-                echo "Time of Reaching last stop: " . $row["Time of last stop"] . "<br>";
-                echo "Current Stop Name: " . $row["Stop Name"] . "<br>";
-                echo "Last Stop". $row["Last Stop"] . "<br>";
+                die("Connection failed: " . $conn->connect_error);
+            }
 
+            $stopName = $arr[1];
+
+            $sql = "SELECT * FROM bus WHERE `Stop Name` = '$stopName'";
+            $result = $conn->query($sql);
+            $arra=Array();
+
+            if($result->num_rows > 0) 
+            {
                 while($row = $result->fetch_assoc()) 
                 {
-                    $fetchedData[] = array(
-                        "BusName" => $row["BusName"],
-                        "TimeOfArrival" => $row["TimeOfArrival"],
-                        "TimeOfLastStop" => $row["TimeOfLastStop"],
-                        "StopName" => $row["StopName"]
-                    );
-                    $jsonString = json_encode($fetchedData, JSON_PRETTY_PRINT);
-                    file_put_contents("bus.json", $jsonString);
-                }
-            }
-        } 
-        else 
-        {
-            echo "No data found for Stop Name: $stopName";
-        }
+                    //echo '<script>alert("' .$row["Bus name"]. '")</script>';
+                    $busname=$row["Bus name"];
+                    $busartime=$row["Time of arrival"];
+                    $busretime=$row["Time of last stop"];
+                    $busstopname=$row["Stop Name"];
+                    $buslastop=$row["Last Stop"];
 
-        $conn->close();
-    }
+                    $rowData = array(
+                        "BusName" => $busname,
+                        "ArrivalTime" => $busartime,
+                        "LastStopTime" => $busretime,
+                        "StopName" => $busstopname,
+                        "LastStop" => $buslastop
+                    );
+
+                    $arra[$busname] = $rowData;
+                }
+            } 
+            else 
+            {
+                echo "No data found for Stop Name: $stopName";
+            }
+            $conn->close();
+        }
     ?>
+    <section id="ctent">
+        <div class="btn">
+            <div onload="al()" id="cont"></div>
+            <div id="table"></div>
+        </div>
+    </section>
     <section id="footer"></section>
-        <div id="sidenav">
+        <div id="sidenav" style="right:-250px;">
             <nav>
                 <ul>
                     <li><a href="Home.html">Home</a></li>
@@ -137,6 +142,72 @@
             }
         </script>
     </section>
+    <script>
+        var busDetails = <?php echo json_encode($arra); ?>;
+
+        function createButtons() {
+            var container = document.getElementById("cont");
+
+            for (var busName in busDetails) 
+            {
+                if (busDetails.hasOwnProperty(busName)) 
+                {
+                    var button = document.createElement("button");
+                    button.textContent = busDetails[busName]["BusName"]+" - at"+busDetails[busName]["ArrivalTime"] + " To:"+busDetails[busName]["LastStop"];
+                    button.onclick = (function(name) 
+                    {
+                        return function() 
+                        {
+                            showDetails(name);
+                        };
+                    })(busName);
+
+                    cont.appendChild(button);
+                }
+            }
+        }
+        var previousDiv = null;
+
+        function showDetails(busName) 
+        {
+            var details = busDetails[busName];
+
+            if (previousDiv) 
+            {
+                document.getElementById("table").removeChild(previousDiv);
+            }
+
+            const newdiv = document.createElement("div");
+            newdiv.id = (details.BusName)
+            
+            const newtable = document.createElement("table");
+            newtable.id="tab";
+
+            for (var prop in details)
+            {
+                if (details.hasOwnProperty(prop)) 
+                {
+                    const newRow = document.createElement("tr");
+
+                    const headingCell = document.createElement("td");
+                    headingCell.textContent = prop;
+                    newRow.appendChild(headingCell);
+
+                    const detailsCell = document.createElement("td");
+                    detailsCell.textContent = details[prop];
+                    newRow.appendChild(detailsCell);
+
+                    newtable.appendChild(newRow);
+                }
+            }
+
+            newdiv.appendChild(newtable);
+            document.getElementById("table").appendChild(newdiv);
+            previousDiv = newdiv;
+        }
+
+        window.onload = createButtons;
+    </script>
 </section>
 </body>
 </html>
