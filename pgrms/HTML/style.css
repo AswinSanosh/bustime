@@ -56,7 +56,7 @@
     border-radius: 4px;
     top: 0;
     left:0;
-    background-color:rgba(52, 52, 52, 0.499);
+    background-color:rgb(66, 66, 66);
     backdrop-filter: blur(10px);
     z-index: -1;
     transition:0.1s;
@@ -98,7 +98,7 @@
     position: absolute;
     top: 0;
     left:0;
-    background-color: rgba(52, 52, 52, 0.499);
+    background-color: rgba(255, 255, 255, 0.538);
     z-index: -1;
     transition:0.1s;
 }
@@ -112,7 +112,7 @@
     font-family: Arial, Helvetica, sans-serif;
     font-size: 10px;
     text-decoration: none;
-    color: rgb(206, 206, 206);
+    color: rgb(66, 66, 66);
     background:transparent;
     position: relative;
 }
@@ -122,8 +122,10 @@
     margin: 0 auto;
 }
 
-#tab {
+#tab 
+{
     width: 80%;
+    font-family: 'Noto Sans', sans-serif;
 }
 
 #tab table {

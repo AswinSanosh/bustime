@@ -112,6 +112,18 @@
                 }
             }
         </script>
+        <div class="btn">
+            <div id="complaints" style="font-family:'Noto Sans', sans-serif;color:white;text-align:left;padding-top:150px;padding-left:15px;padding-bottom:50px"><br>
+                <hr style="color:red;size:3px;width:98%;margin:auto"><br><br>
+                <h1 style="font-size:40px;font-family:'Noto Sans', sans-serif;color:red;">Complaints</h1><br>
+                <form action="#">
+                    Name<br><input style="background-color:argb(66,66,66);color:red;height:25px;width:400px;font-size:small;font-family:'Noto Sans', sans-serif;" type="text" id="nam" name="nam" placeholder="Your name"><br><br>
+                    Email<br><input style="background-color:argb(66,66,66);color:red;height:25px;width:400px;font-size:small;font-family:'Noto Sans', sans-serif;" type="email" id="mail" name="mail" placeholder="Your email id"><br><br>
+                    Descibe your problem<br><input style="text-align:start;background-color:argb(66,66,66);color:red;height: 200px;width:400px;font-size:small;font-family:'Noto Sans', sans-serif;" style="height:50px;width:100px" type="textarea" name="compl" id="compl">
+                    <br><br><button id="comp" style="height:50px;width:auto;padding-left:15px;"><span></span>Submit</button>
+                </form>
+            </div>
+        </div>
     </section>
 </body>
 <script>
