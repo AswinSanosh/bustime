@@ -1,10 +1,26 @@
 [
     {
         "SerialNo": 4,
-        "Stopname": "Nalkavala Bus Stop",
+        "Stopname": "Nalkavala",
         "Latitude": 9.556192469841788,
         "Longitude": 76.53634115123472,
         "PostalCode": 686004,
-        "Distance": 0.06861353018539752
+        "Distance": 0.07030117465472352
+    },
+    {
+        "SerialNo": 5,
+        "Stopname": "Kaduvakulam",
+        "Latitude": 9.554601750697254,
+        "Longitude": 76.52939348004742,
+        "PostalCode": 686004,
+        "Distance": 0.7462316016469603
+    },
+    {
+        "SerialNo": 6,
+        "Stopname": "Boat Jetty",
+        "Latitude": 9.561063455291704,
+        "Longitude": 76.54281824112557,
+        "PostalCode": 686004,
+        "Distance": 0.9064256705789747
     }
 ]

@@ -83,7 +83,7 @@
                     <input type="hidden" id="lati" name="lati">
                     <input type="hidden" id="long" name="long">
                     <input type="hidden" id="emp">
-                    <input type="submit" name="database" style="width: 200px;position:relative;top: 200px;" value="DATABASE - PHP">
+                    <button style="width: 200px;position:relative;top: 200px;">DATABASE - PHP</button>
                 </form>
                 <form action="bustime.php" method="post"> <!--to time-->
                     <input type="hidden" id="ses" name="sessid">
@@ -190,7 +190,7 @@
 <script>
     function getbusstops() 
     {
-        fetch("stops.json")
+        fetch("stops.json") //JSONpart
             .then(res => res.json())
             .then(data => {
                     const busStopsArray = [];
@@ -214,7 +214,8 @@
 
                     addBtn.addEventListener("click", addInput);
 
-                    function addInput() { //JSONpart
+                    function addInput()
+                    { 
                         globalThis.flex = document.createElement("div");
                         flex.className = "btn";
                         const arr=new Array;
@@ -248,7 +249,7 @@
                                 }
                             });
 
-                            const t = document.createTextNode(arr[itr].Name+": "+(Distance*1000).toFixed(1)+"m");
+                            const t = document.createTextNode(arr[itr].Name+": "+(arr[itr].Distance*1000).toFixed(1)+"m");
                             newelement.appendChild(t);
 
                             input.appendChild(flex);
