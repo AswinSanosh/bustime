@@ -9,7 +9,6 @@
     $lat = $_POST['lati'];
     $lon = $_POST['long'];
 
-    // Validation of latitude and longitude
     if (!isset($lat) || !isset($lon) || !is_numeric($lat) || !is_numeric($lon)) {
         echo json_encode(['error' => 'Invalid latitude or longitude']);
         exit;
@@ -20,8 +19,6 @@
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-
-    // Using prepared statements to prevent SQL injection
     $query = $conn->prepare("SELECT `Sl.No.`, `Stopname`, `Latitude`, `Longitude`, `PostalCode`, 
         (6371 * acos(cos(radians(?)) * cos(radians(`Latitude`)) * cos(radians(`Longitude`) - radians(?)) + sin(radians(?)) * sin(radians(`Latitude`)))) AS distance 
         FROM `bustime` 
@@ -34,8 +31,8 @@
 
     $busStopData = array();
 
-    if ($result->num_rows > 0) {
-        // Output data of each row
+    if ($result->num_rows > 0) 
+    {
         while ($row = $result->fetch_assoc()) {
             $busStopData[] = array(
                 'SerialNo' => $row["Sl.No."],
@@ -51,7 +48,6 @@
     header('Content-Type: application/json');
     $encoded = json_encode($busStopData, JSON_PRETTY_PRINT);
 
-    // Storing JSON data in a file with proper error handling
     $filePath = 'stops.json';
     if (file_put_contents($filePath, $encoded) === false) {
         echo json_encode(['error' => 'Unable to write to file']);
@@ -59,7 +55,6 @@
         echo $encoded;
     }
 
-    // Closing the database connection
     $query->close();
     $conn->close();
 ?>

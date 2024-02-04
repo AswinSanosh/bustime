@@ -246,13 +246,14 @@
                             newelement.addEventListener("click",function()
                             {
                                 document.getElementById("ses").value=newelement.id;
-                                if(confirm(newelement.id))
+                                //if(confirm(newelement.id))
                                 {
                                     document.getElementById("subm").click();
                                 }
                             });
-
                             const t = document.createTextNode(arr[itr].Name+": "+(arr[itr].Distance*1000).toFixed(1)+"m");
+                            const span=document.createElement("span");
+                            newelement.appendChild(span);
                             newelement.appendChild(t);
 
                             input.appendChild(flex);

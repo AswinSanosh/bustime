@@ -153,15 +153,15 @@
                 if (busDetails.hasOwnProperty(busName)) 
                 {
                     var button = document.createElement("button");
+                    button.style.cursor="pointer";
                     button.textContent = busDetails[busName]["BusName"]+" - at"+busDetails[busName]["ArrivalTime"] + " To:"+busDetails[busName]["LastStop"];
-                    button.onclick = (function(name) 
+                    button.onclick = (function(name)
                     {
                         return function() 
                         {
                             showDetails(name);
                         };
                     })(busName);
-
                     cont.appendChild(button);
                 }
             }
@@ -207,6 +207,7 @@
         }
 
         window.onload = createButtons;
+        document.body.style.color="black";
     </script>
 </section>
 </body>

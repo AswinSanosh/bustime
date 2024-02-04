@@ -123,7 +123,7 @@
 }
 
 #tab {
-    width: 80%; /* Adjust the width as needed */
+    width: 80%;
 }
 
 #tab table {
@@ -133,19 +133,15 @@
 }
 
 #tab th, #tab td {
-    border: 1px solid white; /* White border for better visibility */
+    border: 1px solid white;
     padding: 20px;
     text-align: left;
-    color: white; /* Text color for table cells */
+    color: rgb(255, 255, 255);
 }
 
 #tab th {
     background-color: black;
-    color: white; /* Text color for table header */
-}
-
-#tab th[colspan="2"] {
-    text-align: center; /* Optional: Center the content */
+    color: white;
 }
 
 #footer{
