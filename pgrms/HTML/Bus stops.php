@@ -83,7 +83,7 @@
                     <input type="hidden" id="lati" name="lati">
                     <input type="hidden" id="long" name="long">
                     <input type="hidden" id="emp">
-                    <button style="width: 200px;position:relative;top: 200px;">DATABASE - PHP</button>
+                    <input type="submit" name="database" style="width: 200px;position:relative;top: 200px;" value="DATABASE - PHP">
                 </form>
                 <form action="bustime.php" method="post"> <!--to time-->
                     <input type="hidden" id="ses" name="sessid">
@@ -193,54 +193,44 @@
         fetch("stops.json")
             .then(res => res.json())
             .then(data => {
-                const busStopsArray = [];
+                    const busStopsArray = [];
+                    data.forEach(stop => 
+                    {
+                        const stopArray = [
+                            stop.SerialNo,
+                            stop.Stopname,
+                            stop.Latitude,
+                            stop.Longitude,
+                            stop.PostalCode,
+                            stop.Distance
+                        ];
 
-                data.forEach(stop => 
-                {
-                    /*console.log("Bus Stop ID: " + stop.SerialNo);
-                    console.log("Bus Stop Name: " + stop.Stopname);
-                    console.log("Latitude: " + stop.Latitude);
-                    console.log("Longitude: " + stop.Longitude);
-                    console.log("Postal Code: " + stop.PostalCode);
-                    console.log("Distance " + stop.Distance);*/
+                        busStopsArray.push(stopArray);
+                        console.log(busStopsArray);
+                    })
 
-                    const stopArray = [
-                        stop.SerialNo,
-                        stop.Stopname,
-                        stop.Latitude,
-                        stop.Longitude,
-                        stop.PostalCode,
-                        stop.Distance
-                    ];
+                    const addBtn = document.querySelector(".add");
+                    const input = document.querySelector(".newel");
 
-                    busStopsArray.push(stopArray);
-                });
+                    addBtn.addEventListener("click", addInput);
 
-                console.log(busStopsArray);
-
-                const addBtn = document.querySelector(".add");
-                const input = document.querySelector(".newel");
-
-                addBtn.addEventListener("click", addInput);
-
-                function addInput() {
-                    globalThis.flex = document.createElement("div");
-                    flex.className = "btn";
-                    const arr=new Array;
-                    var itr=0;
-                    busStopsArray.forEach(stop => {
-                        const idst = stop[0];
-                        const Name = stop[1]; // Bus Stop Name
-                        const Latistop =stop[2];
-                        const Longstop = stop[3];
-                        const Postalcode = stop[4];
-                        const Distance = stop[5]; // Distance
-
-                        if (Distance*1000 < 1000)
+                    function addInput() { //JSONpart
+                        globalThis.flex = document.createElement("div");
+                        flex.className = "btn";
+                        const arr=new Array;
+                        var itr=0;
+                        busStopsArray.forEach(stop => 
                         {
-                            arr[itr]={ids:stop[0],Name:stop[1],Latitude:stop[2],Longitude:stop[3],Postalcode:stop[4],Distance:stop[5]}
+                            arr[itr]={
+                                ids:stop[0],
+                                Name:stop[1],
+                                Latitude:stop[2],
+                                Longitude:stop[3],
+                                Postalcode:stop[4],
+                                Distance:stop[5]
+                            }
+
                             console.log(arr[itr]);
-                            locatestop(arr[itr]);
 
                             document.getElementById("finder").style.display = "none";
                             const newelement = document.createElement("a");
@@ -258,36 +248,33 @@
                                 }
                             });
 
-                            const t = document.createTextNode(Name+": "+(Distance*1000).toFixed(1)+"m");
+                            const t = document.createTextNode(arr[itr].Name+": "+(Distance*1000).toFixed(1)+"m");
                             newelement.appendChild(t);
 
                             input.appendChild(flex);
                             flex.appendChild(newelement);
 
+                            //alert(arr[itr].Name+", "+(arr[itr].Distance*1000).toFixed(1));
+                            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            }).addTo(map);
+
+                            const mar = L.marker([arr[itr].Latitude, arr[itr].Longitude], 
+                            {
+                                clickable: true,
+                                id: arr[itr].ids*1941,
+                            }).addTo(map);
+
+                            mar.bindPopup(arr[itr].Name + " " + (arr[itr].Distance * 1000).toFixed(1) + "m", { autoClose: false, autoPan: false }).openPopup();
+                            map.setView([lat, lon], 16);
+
                             itr++;
-                        }
-                    });
-                }
-            })
+                        });
+                    }
+                })
             .catch(error => {
                 console.error("Error fetching bus stops:", error);
             });
-    }
-    function locatestop(arra) 
-    {
-        //alert(arra.Name+", "+(arra.Distance*1000).toFixed(1));
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-
-        const mar = L.marker([arra.Latitude, arra.Longitude], 
-        {
-            clickable: true,
-            id: arra.ids*1941,
-        }).addTo(map);
-
-        mar.bindPopup(arra.Name + " " + (arra.Distance * 1000).toFixed(1) + "m", { autoClose: false, autoPan: false }).openPopup();
-        map.setView([lat, lon], 16);
     }
 </script>
 </html>

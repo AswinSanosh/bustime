@@ -1,26 +1,10 @@
 [
     {
-        "SerialNo": "1",
-        "Stopname": "Maliankara Post Office",
-        "Latitude": "10.181872841696254",
-        "Longitude": "76.18491379589479",
-        "PostalCode": "683516",
-        "Distance": "0.15409323685925833"
-    },
-    {
-        "SerialNo": "2",
-        "Stopname": "Maliankara College",
-        "Latitude": "10.18090131286828",
-        "Longitude": "76.18227454360718",
-        "PostalCode": "683516",
-        "Distance": "0.21810632134676727"
-    },
-    {
-        "SerialNo": "3",
-        "Stopname": "Vadakke Maliankara Junction",
-        "Latitude": "10.179615422528594",
-        "Longitude": "76.18035360845543",
-        "PostalCode": "683516",
-        "Distance": "0.44179420796343477"
+        "SerialNo": 4,
+        "Stopname": "Nalkavala Bus Stop",
+        "Latitude": 9.556192469841788,
+        "Longitude": 76.53634115123472,
+        "PostalCode": 686004,
+        "Distance": 0.06861353018539752
     }
 ]

@@ -1,5 +1,6 @@
 <?php
     session_start();
+
     $servername = "localhost";
     $username = "root";
     $password = "";
@@ -7,10 +8,6 @@
 
     $lat = $_POST['lati'];
     $lon = $_POST['long'];
-
-    // Store the values in session variables
-    $_SESSION['latitude'] = $lat;
-    $_SESSION['longitude'] = $lon;
 
     // Validation of latitude and longitude
     if (!isset($lat) || !isset($lon) || !is_numeric($lat) || !is_numeric($lon)) {
@@ -24,13 +21,16 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $query = "SELECT `Sl.No.`, `Stopname`, `Latitude`, `Longitude`, `PostalCode`, 
-        (6371 * acos(cos(radians($lat)) * cos(radians(`Latitude`)) * cos(radians(`Longitude`) - radians($lon)) + sin(radians($lat)) * sin(radians(`Latitude`)))) AS distance 
+    // Using prepared statements to prevent SQL injection
+    $query = $conn->prepare("SELECT `Sl.No.`, `Stopname`, `Latitude`, `Longitude`, `PostalCode`, 
+        (6371 * acos(cos(radians(?)) * cos(radians(`Latitude`)) * cos(radians(`Longitude`) - radians(?)) + sin(radians(?)) * sin(radians(`Latitude`)))) AS distance 
         FROM `bustime` 
-        ORDER BY distance 
-        LIMIT 3";
+        HAVING distance < 1
+        ORDER BY distance");
 
-    $result = $conn->query($query);
+    $query->bind_param("dds", $lat, $lon, $lat);
+    $query->execute();
+    $result = $query->get_result();
 
     $busStopData = array();
 
@@ -47,8 +47,19 @@
             );
         }
     }
-    header('Content-Type: application/json');
-    $encoded=json_encode($busStopData, JSON_PRETTY_PRINT);
-    echo json_encode($encoded);
-    file_put_contents('stops.json', $encoded);
 
+    header('Content-Type: application/json');
+    $encoded = json_encode($busStopData, JSON_PRETTY_PRINT);
+
+    // Storing JSON data in a file with proper error handling
+    $filePath = 'stops.json';
+    if (file_put_contents($filePath, $encoded) === false) {
+        echo json_encode(['error' => 'Unable to write to file']);
+    } else {
+        echo $encoded;
+    }
+
+    // Closing the database connection
+    $query->close();
+    $conn->close();
+?>
