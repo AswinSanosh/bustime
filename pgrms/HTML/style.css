@@ -98,7 +98,7 @@
     position: absolute;
     top: 0;
     left:0;
-    background-color: rgba(255, 255, 255, 0.538);
+    background-color: rgb(66, 66, 66);
     z-index: -1;
     transition:0.1s;
 }
